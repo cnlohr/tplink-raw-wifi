@@ -63,13 +63,13 @@ static void ICACHE_FLASH_ATTR myTimer(void *arg)
 	if( !doneinit )
 	{
 		esp_now_init();
-		esp_now_register_recv_cb(espnowcb);
-		esp_now_register_send_cb(espnowcbtx);
 	//	esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);
 	//	uint8_t routermac[] = {0x30, 0xb5, 0xc2, 0x5d, 0x1b, 0xc6,}; //Src Address of my router.
-		esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);
+		esp_now_set_self_role(ESP_NOW_ROLE_COMBO);
+		esp_now_register_recv_cb(espnowcb);
+		esp_now_register_send_cb(espnowcbtx);
 		uint8_t routermac[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff,}; //Src Address of my router.
-		printf( "PEERINFO: %d\n", esp_now_add_peer(routermac, ESP_NOW_ROLE_CONTROLLER, CHANNEL, 0, 0) );
+		printf( "PEERINFO: %d\n", esp_now_add_peer(routermac, ESP_NOW_ROLE_SLAVE, CHANNEL, 0, 0) );
 		doneinit = 1;
 	}
 	
