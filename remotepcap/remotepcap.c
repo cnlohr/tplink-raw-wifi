@@ -48,6 +48,8 @@ void * TXThread( void * v )
 			0x60, //Data rate.
 			0x85, 0x09, 0xc0, 0x00, 0x14, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x01, //More flags and stuff (mostly ignored)
 
+#if 0
+/* Looks like an ESP-Now Packet */
 			0xd0, 0x00, 0x00, 0x00, //IEEE Header
 			0xff, 0xff, 0xff, 0xff, 0xff, 0xff, //Destination Address
 			//0x1a, 0xfe, 0x34, 0xe1, 0x48, 0x05, //Src Address  (ESP Mac)
@@ -68,6 +70,22 @@ void * TXThread( void * v )
 		pack[67] = rand();
 		pack[68] = rand();
 		pack[69] = rand();
+#else
+			0x08, 0x00, 0x00, 0x00, //IEEE Header NOTE: 0x08 seems to immediately get through to the ESP8266.
+			0xff, 0xff, 0xff, 0xff, 0xff, 0xff, //Destination Address
+			//0x1a, 0xfe, 0x34, 0xe1, 0x48, 0x05, //Src Address  (ESP Mac)
+			0x30, 0xb5, 0xc2, 0x5d, 0x1b, 0xc6, //Src Address  (TP Link MAC)
+			//0xff, 0xff, 0xff, 0xff, 0xff, 0xff,	//Src address			
+			0xff, 0xff, 0xff, 0xff, 0xff, 0xff,	//
+			0x00, 0x00,	//Sequence number
+			0x7f, 0x18, 0xfe, 0x34, // "vendor specific" information (matches.
+			0x4b, 0xfc, 0xec, 0xb6,	// 0x67? ?!?!?! session or something?
+			0xdd, 0x0d, 0x18, 0xfe, 0x34, 0x04, 0x01,	//ESPNOW protocol
+			0x45, 0x53, 0x50, 0x38, 0x32, 0x36, 0x36, 0x00,  //Payload
+		};
+
+#endif
+
 		int r = send( rawp, pack, sizeof(pack), 0 );
 		/*data_size = recv( rawp, buffer, sizeof( buffer ), 0 );
 		if( data_size < 0 )
@@ -77,7 +95,7 @@ void * TXThread( void * v )
 		}
 */
 
-		usleep(100000);
+		usleep(1000);
 	}
 }
 
@@ -85,12 +103,12 @@ void * TXThread( void * v )
 int main()
 {
 
-#if 0
+#if 1
 	system( "ifconfig mon0 down > /dev/null" );
 	system( "iw phy phy0 interface add mon0 type monitor > /dev/null");
-	system( "iw dev wlan0 del > /dev/null" );
+	//system( "iw dev wlan0 del > /dev/null" );
 	system( "ifconfig mon0 up > /dev/null" );
-	system( "iw dev mon0 set channel 6" );
+	//system( "iw dev mon0 set channel 1" );
 #endif
 
 	sleep(1);
