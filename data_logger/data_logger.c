@@ -22,15 +22,18 @@ void mycb( void * id, void * rr, uint8_t * data, int dlen )
 	printf( "\n" );
 #endif
 	//We're specifically looking for messages with "VOLTEE" as the name.
+
 	if( memcmp( data + 68, "VOLTTE", 6) == 0 )
 	{
 		printf( "VOLTEE MATCH\n" );
 		uint32_t packid = data[74]<<24 | data[75] << 16 | data[76] << 8 | data[77];
 		float voltage = ((float)(data[78]<<8 | data[79]))/1000.0;
+		int8_t rssi0 = data[0x22];
+		int8_t rssi1 = data[0x24];
 		char mac[128];
 		char run[128];
 		sprintf( mac, "%02x-%02x-%02x-%02x-%02x-%02x", data[48], data[49], data[50], data[51], data[52], data[53] );
-		sprintf( run, "sh submit_value.sh %d %f %s", packid, voltage, mac );
+		sprintf( run, "sh submit_value.sh %d %f %s %d %d %d", packid, voltage, mac, rssi0, rssi1 );
 		printf( "%s\n", run );
 		system( run );
 	}
