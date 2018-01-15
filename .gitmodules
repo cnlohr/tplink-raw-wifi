@@ -1,3 +1,3 @@
-[submodule "esp8266raw/esp82xx"]
-	path = esp8266raw/esp82xx
+[submodule "esp8266raw-failed-espnow-test/esp82xx"]
+	path = esp8266raw-failed-espnow-test/esp82xx
 	url = https://github.com/cnlohr/esp82xx.git
