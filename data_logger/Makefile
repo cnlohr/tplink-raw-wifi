@@ -11,14 +11,14 @@ CC:=/win/lede/source/staging_dir/toolchain-mips_24kc_gcc-5.5.0_musl/bin/mips-ope
 
 #LDFLAGS:=dev/libgcc_s.so.1 dev/libc.so -nostdlib
 
-remotepcap : remotepcap.c ../util/librawp.c
+data_logger : data_logger.c ../util/librawp.c
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
-burn : remotepcap
-	cat remotepcap | $(SSHLINE) "cat - > /tmp/remotepcap; chmod +x /tmp/remotepcap"
+burn : data_logger
+	cat data_logger | $(SSHLINE) "cat - > /tmp/data_logger; chmod +x /tmp/data_logger"
 
 watch : burn
-	$(SSHLINE) "/tmp/remotepcap" | wireshark -i - -k 
+	$(SSHLINE) "/tmp/data_logger"
 
 clean :
-	rm -rf *.o *~ remotepcap
+	rm -rf *.o *~ data_logger

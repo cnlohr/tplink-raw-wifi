@@ -71,7 +71,7 @@ void * TXThread( void * v )
 		pack[68] = rand();
 		pack[69] = rand();
 #else
-			0x08, 0x00, 0x00, 0x00, //IEEE Header NOTE: 0x08 seems to immediately get through to the ESP8266.
+			0x88, 0x00, 0x00, 0x00, //IEEE Header NOTE: 0x08 seems to immediately get through to the ESP8266. But, the ESP responds, even if broadcast.  Consider keeping 0x80 if unicasting back.
 			0xff, 0xff, 0xff, 0xff, 0xff, 0xff, //Destination Address
 			//0x1a, 0xfe, 0x34, 0xe1, 0x48, 0x05, //Src Address  (ESP Mac)
 			0x30, 0xb5, 0xc2, 0x5d, 0x1b, 0xc6, //Src Address  (TP Link MAC)
@@ -95,7 +95,7 @@ void * TXThread( void * v )
 		}
 */
 
-		usleep(1000);
+		usleep(10000);
 	}
 }
 
@@ -108,7 +108,7 @@ int main()
 	system( "iw phy phy0 interface add mon0 type monitor > /dev/null");
 	//system( "iw dev wlan0 del > /dev/null" );
 	system( "ifconfig mon0 up > /dev/null" );
-	//system( "iw dev mon0 set channel 1" );
+	system( "iw dev mon0 set channel 7" );
 #endif
 
 	sleep(1);
