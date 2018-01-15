@@ -5,6 +5,7 @@ Test using tp-links to do raw wifi.
 
 This looks interesting:https://sandilands.info/sgordon/capturing-wifi-in-monitor-mode-with-iw
 
+To build the other half of this, for the ESP8266, please look here: https://github.com/cnlohr/MinEspSDKLib
 
 Making build environment:
 
